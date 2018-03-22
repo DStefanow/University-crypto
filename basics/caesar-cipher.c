@@ -1,6 +1,5 @@
-#include <ctype.h>
+#include<ctype.h>
 #include <string.h>
-
 #include "alpha.h"
 
 int get_arr_position(char symbol);
@@ -12,7 +11,7 @@ void encrypt_data();
 void decrypt_data();
 
 char *text;
-size_t key;
+int key;
 size_t text_length;
 size_t text_max_size = 1024;
 
@@ -27,7 +26,7 @@ void main()
 	get_user_data();
 
 	if (method_num == 1) {
-		encrpyt_data();
+		encrypt_data();
 	}
 	else if (method_num == 2) {
 		decrypt_data();
@@ -51,7 +50,7 @@ void get_user_data() {
 	// Read key number
 	while (1) {
 		printf("Enter a positive number key: ");
-		scanf("%zu", &key);
+		scanf("%d", &key);
 
 		if (key > 0) {
 			break;
@@ -91,6 +90,39 @@ void encrypt_data() {
 	printf("\n");
 }
 
+void decrypt_data() {
+	int i = 0;
+	int new_index;
+	int alphabet_position;
+
+	printf("Decrypted data: ");
+	while (1) {
+		// end of the string
+		if (i == text_length) {
+			break;
+		}
+
+		alphabet_position = get_arr_position(text[i]);
+
+		if (alphabet_position > -1 ) {
+			new_index = (alphabet_position - key) % LENGTH;
+
+			if (new_index < 0) {
+				new_index = LENGTH + new_index;
+			}
+
+			printf("%c", ALPHABET[new_index]);
+		}
+		else {
+			printf("%c", text[i]);
+		}
+
+		i++;
+	}
+
+	printf("\n");
+}
+
 /**
 * Get method type:
 * 1 - for encrypt
@@ -120,11 +152,13 @@ int get_method() {
 }
 
 int compare_strings(char *str1, char *str2) {
-	int i = 0;
-	int max_length = strlen(str1) - 1; // Remove '\n' on the end of the string
+	size_t i = 0;
+	size_t len_str1 = strlen(str1) - 1;
+	size_t len_str2 = strlen(str2);
+	size_t max_length = len_str1 > len_str2 ? len_str1 : len_str2; // Remove '\n' on the end of the string
 
 	// Empty string
-	if (max_length == 0) {
+	if (len_str1 == 0) {
 		return 0;
 	}
 
