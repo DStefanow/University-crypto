@@ -9,7 +9,7 @@
 		3 p q r s t
 		4 o v w x y
 		5 z - - - -
-- Are blank spaces
+`-` Are used to fill the matrix
 */
 
 
