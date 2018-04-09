@@ -43,12 +43,14 @@ void get_user_data() {
 
 	// Read key number
 	while (1) {
-		printf("Enter a positive number key: ");
+		printf("Enter a positive number key for start index: ");
 		scanf("%d", &key);
 
 		if (key > 0) {
 			break;
 		}
+
+		clear_stdin();
 	}
 
 	return;
