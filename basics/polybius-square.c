@@ -149,6 +149,7 @@ void decrypt_data() {
 			break;
 		}
 
+		// Get the row and column index (remove 48 because we work with the ASCII table)
 		row = (int)text[i] - 48;
 		col = (int)text[i + 1] - 48;
 
