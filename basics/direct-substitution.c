@@ -62,22 +62,105 @@ void get_user_data_for_encrypt() {
 		if (key_index > 0) {
 			break;
 		}
+
+		clear_stdin();
 	}
 
 	return;
 }
 
-void get_user_data_for_decrypt()
-{
-	// TODO ...
+void get_user_data_for_decrypt() {
+	int i;
+	char isValid = 1;
+
+	// Read the text
+	text = (char*)malloc(text_max_size * sizeof(char));
+	while (1) {
+		printf("Enter text (clear text with even length, that contains only digits): ");
+		text_length = getline(&text, &text_max_size, stdin) - 1;
+
+		isValid=1;
+
+		// We can decrypt only text with even length
+		if (text_length % 2 != 0) {
+			printf("Invalid input data!\n");
+			continue;
+		}
+
+		for (i = 0; i < text_length - 1; i+=2) {
+			// Check first and second digit
+			if ((text[i] < '0' || text[i] > '5') || (text[i + 1] < '0' || text[i + 1] > '4')) {
+				printf("Invalid input data!\n");
+				// Invalid character
+				isValid=0;
+				break;
+			}
+
+		}
+
+		if ((text_length > 1) && (isValid == 1)) {
+			break;
+		}
+	}
+
+	// Read key number
+	while (1) {
+		printf("Enter a positive number key for start index: ");
+		scanf("%d", &key_index);
+
+		if (key_index > 0) {
+			break;
+		}
+
+		clear_stdin();
+	}
 }
 
-void encrypt_data()
-{
-	// TODO ...
+void encrypt_data() {
+	// Start encryption and print the encrypted data
+	int i = 0;
+	int new_index;
+	int alphabet_position;
+
+	printf("Encrypted data: ");
+	while (1) {
+		// end of the string
+		if (i == text_length - 1) {
+			break;
+		}
+
+		// Print encrypted symbol
+		alphabet_position = get_arr_position(text[i]);
+		printf("%d", alphabet_position + key_index);
+
+		i++;
+	}
+	printf("\n");
 }
 
-void decrypt_data()
-{
-	// TODO ...
+void decrypt_data() {
+	int i = 0;
+	int new_index;
+	int alphabet_position;
+
+	int row,col;
+
+	printf("Decrypted data: ");
+	while (1) {
+		// end of the string
+		if (i ==  text_length) {
+			break;
+		}
+
+		// Get the row and column index (remove 48 because we work with the ASCII table)
+		row = (int)text[i] - 48;
+		col = (int)text[i + 1] - 48;
+
+		printf("%c", ALPHABET[(row * COLS) + col]);
+
+		i+=2;
+	}
+
+	printf("\n");
 }
+
