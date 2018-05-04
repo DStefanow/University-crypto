@@ -47,14 +47,29 @@ void get_user_data() {
 		}
 	}
 
+	size_t i = 0;
+	char isInvalid = 0;
 	key = (char*)malloc(TEXT_MAX_SIZE * sizeof(char));
 	// Read key number
 	while (1) {
+		isInvalid = 0;
+
 		// Read key and remove '\n' on the end
-		printf("Enter key cipher: ");
+		printf("Enter key cipher (Only valid elements): ");
 		key_length = getline(&key, &TEXT_MAX_SIZE, stdin) - 1;
 
-		if (key_length > 0) {
+		// Check if key contains invalid symbols
+		while (i < key_length) {
+			if (get_arr_position(key[i]) == -1) {
+				printf("Use only elements from declared alphabet.\n");
+				isInvalid = 1;
+				break;
+			}
+
+			i++;
+		}
+
+		if ((key_length > 0) && (isInvalid == 0)) {
 			break;
 		}
 	}
